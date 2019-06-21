@@ -13,7 +13,7 @@ driver = webdriver.Chrome(chrome_options=options)
 ## www.mozocry.com
 baseurl = 'http://www.mozocry.com/'
 subpages = [
-    "", "#hedorosan", "#spectral", "#goldfish", "#beenk", "#game",
+    "", "#hedrosan", "#spectral", "#goldfish", "#beenk", "#game",
     "#stareater", "#zd", "#cb", "#trafri", "#sictic", "#etc"
 ]
 
@@ -38,14 +38,11 @@ def routine(pageurl):
     print(pageurl)
 
     ## 2. Download all images
-    img_tag_lst = driver.find_elements_by_tag_name('img')
-    a_tag_lst = driver.find_elements_by_tag_name('a')
     image_url_lst = []
-    for img_tag in img_tag_lst:
-        relurl = img_tag.get_attribute('src')
-        image_url_lst.append(urljoin(baseurl, relurl))
-    for a_tag in a_tag_lst:
-        relurl = a_tag.get_attribute('href')
+    rel_url_lst = []
+    rel_url_lst.extend([tag.get_attribute('src') for tag in driver.find_elements_by_tag_name('img')])
+    rel_url_lst.extend([tag.get_attribute('href') for tag in driver.find_elements_by_tag_name('a')])
+    for relurl in rel_url_lst:
         ext = relurl.split('/')[-1].split('.')[-1]
         if ext.lower() in image_extensions:
             image_url_lst.append(urljoin(baseurl, relurl))
